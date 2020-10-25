@@ -53,11 +53,18 @@ def main():
             return True
         if args[0] in builtins:
             return builtins[args[0]](args)
-        return launch(args)
+        if not (args[0].startswith('/') or args[0].startswith('.')):
+            print_flush('command {} not recognized. Try \'help\''.format(args[0]))
+            return
+        if os.path.isfile(args[0]):
+            return launch(args)
+        print_flush('File {} not found. Try \'help\''.format(args[0]))
 
     def repl():
+        user = ''
         while True:
-            user = os.getenv("USER")
+            if not user:
+                user = os.getenv("USER")
             print_flush('{} on mini_sh> '.format(user), end='')
             args = list(filter(bool, stdin.readline().strip().split()))
             execute(args)
