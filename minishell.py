@@ -56,10 +56,11 @@ def main():
         return launch(args)
 
     def repl():
-      while True:
-        print_flush('> ', end='')
-        args = list(filter(bool, stdin.readline().strip().split()))
-        execute(args)
+        while True:
+            user = os.getenv("USER")
+            print_flush('{} on mini_sh> '.format(user), end='')
+            args = list(filter(bool, stdin.readline().strip().split()))
+            execute(args)
 
     # optional: load .minishellrc
 
